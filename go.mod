@@ -2,12 +2,7 @@ module github.com/mywordpress-io/caddy-vault-storage
 
 go 1.18
 
-replace github.com/mywordpress-io/certmagic-vault-storage => ../certmagic-vault-storage
-
-require (
-	github.com/caddyserver/caddy/v2 v2.6.4
-	github.com/mywordpress-io/certmagic-vault-storage v0.0.0-00010101000000-000000000000
-)
+require github.com/caddyserver/caddy/v2 v2.6.4
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -24,6 +19,7 @@ require (
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/mholt/acmez v1.1.0 // indirect
 	github.com/miekg/dns v1.1.50 // indirect
+	github.com/mywordpress-io/certmagic-vault-storage v0.0.0-20230512182001-dd8e8c39735e // indirect
 	github.com/onsi/ginkgo/v2 v2.3.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_golang v1.14.0 // indirect
