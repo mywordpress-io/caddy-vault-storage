@@ -21,8 +21,12 @@ type Storage struct {
 // CaddyModule returns the Caddy module information.
 func (s Storage) CaddyModule() caddy.ModuleInfo {
 	return caddy.ModuleInfo{
-		ID:  "caddy.storage.vault",
-		New: func() caddy.Module { return new(Storage) },
+		ID: "caddy.storage.vault",
+		New: func() caddy.Module {
+			storage := new(Storage)
+			storage.Storage = certmagicVaultStorage.NewStorage(certmagicVaultStorage.StorageConfig{})
+			return storage
+		},
 	}
 }
 
