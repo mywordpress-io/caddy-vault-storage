@@ -114,11 +114,6 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				}
 				lockPollingInterval := certmagicVaultStorage.Duration(val)
 				s.Storage.StorageConfig.LockPollingInterval = &lockPollingInterval
-			case "log_level":
-				if !d.NextArg() {
-					return d.ArgErr()
-				}
-				s.Storage.StorageConfig.LogLevel = d.Val()
 			default:
 				return d.Errf("unrecognized parameter '%s'", d.Val())
 			}
