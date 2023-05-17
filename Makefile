@@ -11,10 +11,11 @@ lint: ## Run linter against codebase
 	@golangci-lint -v run
 .PHONY: lint
 
+build: export WITH_CADDY_ROUTE53           ?= github.com/caddy-dns/route53
 build: export WITH_CADDY_VAULT_STORAGE     ?= github.com/mywordpress-io/caddy-vault-storage=.
 build: export WITH_CERTMAGIC_VAULT_STORAGE ?= github.com/mywordpress-io/certmagic-vault-storage=../certmagic-vault-storage
 build: lint build-setup ## Run 'xcaddy' to build vault storage plugin in to caddy binary
-	@xcaddy build --output bin/caddy --with ${WITH_CADDY_VAULT_STORAGE} --with ${WITH_CERTMAGIC_VAULT_STORAGE}
+	@xcaddy build --output bin/caddy --with ${WITH_CADDY_ROUTE53} --with ${WITH_CADDY_VAULT_STORAGE} --with ${WITH_CERTMAGIC_VAULT_STORAGE}
 .PHONY: build
 
 build-setup:
