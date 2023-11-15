@@ -16,11 +16,12 @@ func init() {
 
 type Storage struct {
 	*certmagicVaultStorage.Storage
+	certmagicVaultStorage.StorageConfig
 }
 
 // Provisions an instance of the storage provider in caddy
 func (s *Storage) Provision(ctx caddy.Context) error {
-	s.Storage = certmagicVaultStorage.NewStorage(s.Storage.StorageConfig)
+	s.Storage = certmagicVaultStorage.NewStorage(s.StorageConfig)
 	s.Storage.SetLogger(ctx.Logger(s).Sugar())
 	return nil
 }
@@ -47,7 +48,7 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 		if !d.NextArg() {
 			return d.ArgErr()
 		}
-		s.Storage.StorageConfig.URL, err = certmagicVaultStorage.ParseURL(d.Val())
+		s.StorageConfig.URL, err = certmagicVaultStorage.ParseURL(d.Val())
 		if err != nil {
 			return err
 		}
@@ -58,42 +59,42 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				if !d.NextArg() {
 					return d.ArgErr()
 				}
-				s.Storage.StorageConfig.Token = d.Val()
+				s.StorageConfig.Token = d.Val()
 			case "approle_login_path":
 				if !d.NextArg() {
 					return d.ArgErr()
 				}
-				s.Storage.StorageConfig.ApproleLoginPath = d.Val()
+				s.StorageConfig.ApproleLoginPath = d.Val()
 			case "approle_logout_path":
 				if !d.NextArg() {
 					return d.ArgErr()
 				}
-				s.Storage.StorageConfig.ApproleLogoutPath = d.Val()
+				s.StorageConfig.ApproleLogoutPath = d.Val()
 			case "approle_role_id":
 				if !d.NextArg() {
 					return d.ArgErr()
 				}
-				s.Storage.StorageConfig.ApproleRoleId = d.Val()
+				s.StorageConfig.ApproleRoleId = d.Val()
 			case "approle_secret_id":
 				if !d.NextArg() {
 					return d.ArgErr()
 				}
-				s.Storage.StorageConfig.ApproleSecretId = d.Val()
+				s.StorageConfig.ApproleSecretId = d.Val()
 			case "secrets_path":
 				if !d.NextArg() {
 					return d.ArgErr()
 				}
-				s.Storage.StorageConfig.SecretsPath = d.Val()
+				s.StorageConfig.SecretsPath = d.Val()
 			case "path_prefix":
 				if !d.NextArg() {
 					return d.ArgErr()
 				}
-				s.Storage.StorageConfig.PathPrefix = d.Val()
+				s.StorageConfig.PathPrefix = d.Val()
 			case "insecure_skip_verify":
 				if !d.NextArg() {
 					return d.ArgErr()
 				}
-				s.Storage.StorageConfig.InsecureSkipVerify = d.ScalarVal().(bool)
+				s.StorageConfig.InsecureSkipVerify = d.ScalarVal().(bool)
 			case "lock_timeout":
 				if !d.NextArg() {
 					return d.ArgErr()
@@ -103,7 +104,7 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 					return err
 				}
 				lockTimeout := certmagicVaultStorage.Duration(val)
-				s.Storage.StorageConfig.LockTimeout = &lockTimeout
+				s.StorageConfig.LockTimeout = &lockTimeout
 			case "lock_polling_interval":
 				if !d.NextArg() {
 					return d.ArgErr()
@@ -113,7 +114,7 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 					return err
 				}
 				lockPollingInterval := certmagicVaultStorage.Duration(val)
-				s.Storage.StorageConfig.LockPollingInterval = &lockPollingInterval
+				s.StorageConfig.LockPollingInterval = &lockPollingInterval
 			default:
 				return d.Errf("unrecognized parameter '%s'", d.Val())
 			}
@@ -121,12 +122,12 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	}
 
 	// Make sure 'secrets_path' is non-empty
-	if s.Storage.StorageConfig.SecretsPath == "" {
+	if s.StorageConfig.SecretsPath == "" {
 		return errors.New("secret_path is required")
 	}
 
 	// Make sure user has non-empty values for at least 'token' OR 'approle_role_id' / 'approle_secret_id'
-	if s.Storage.StorageConfig.Token == "" && (s.Storage.StorageConfig.ApproleRoleId == "" || s.Storage.StorageConfig.ApproleSecretId == "") {
+	if s.StorageConfig.Token == "" && (s.StorageConfig.ApproleRoleId == "" || s.StorageConfig.ApproleSecretId == "") {
 		return errors.New("you must define 'token' or 'approle_role_id' + 'approle_secret_id' in order to authenticate with Vault")
 	}
 
