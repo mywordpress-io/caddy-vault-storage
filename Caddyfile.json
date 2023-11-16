@@ -1,0 +1,75 @@
+{
+  "storage": {
+    "address": "http://localhost:8200",
+    "approle_login_path": "auth/approle/login",
+    "approle_logout_path": "auth/token/revoke-self",
+    "approle_role_id": "",
+    "approle_secret_id": "",
+    "insecure_skip_verify": false,
+    "lock_polling_interval": "5s",
+    "lock_timeout": "5m0s",
+    "module": "vault",
+    "path_prefix": "caddy/certificates",
+    "secrets_path": "secrets",
+    "token": "dead-beef"
+  },
+  "apps": {
+    "http": {
+      "servers": {
+        "srv0": {
+          "listen": [
+            ":10443"
+          ],
+          "automatic_https": {
+            "disable_redirects": true
+          },
+          "routes": [
+            {
+              "match": [
+                {
+                  "host": [
+                    "example.com"
+                  ]
+                }
+              ],
+              "handle": [
+                {
+                  "handler": "subroute",
+                  "routes": [
+                    {
+                      "handle": [
+                        {
+                          "body": "Hello, world!",
+                          "handler": "static_response"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "terminal": true
+            }
+          ]
+        }
+      }
+    },
+    "tls": {
+      "automation": {
+        "policies": [
+          {
+            "issuers": [{
+              "module": "internal"
+            }]
+          }
+        ]
+      }
+    },
+    "pki": {
+      "certificate_authorities": {
+        "local": {
+          "install_trust": false
+        }
+      }
+    }
+  }
+}

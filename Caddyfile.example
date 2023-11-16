@@ -1,0 +1,25 @@
+{
+	skip_install_trust
+	auto_https disable_redirects
+	storage vault http://localhost:8200 {
+		token dead-beef
+
+		#approle_login_path <value>
+		#approle_logout_path <value>
+		#approle_role_id <value>
+		#approle_secret_id <value>
+
+		secrets_path secrets
+		path_prefix caddy/certificates
+
+		#insecure_skip_verify <value>
+
+		#lock_timeout <value>
+		#lock_polling_interval <value>
+	}
+}
+
+example.com:10443 {
+	tls internal
+	respond "Hello, world!"
+}
