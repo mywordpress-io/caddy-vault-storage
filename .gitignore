@@ -1,3 +1,4 @@
 bin/*
 !bin/.git-keep
 config.json
+code-coverage.out

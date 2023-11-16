@@ -11,11 +11,11 @@ associated repo here: https://github.com/mywordpress-io/certmagic-vault-storage
 ### Build
 
 Build Caddy using `xcaddy` with the vault storage plugins:
-- `xcaddy build --output bin/caddy --with github.com/mywordpress-io/caddy-vault-storage --with github.com/mywordpress-io/certmagic-vault-storage`
+- `xcaddy build --output bin/caddy --with github.com/mywordpress-io/caddy-vault-storage@<tag> --with github.com/mywordpress-io/certmagic-vault-storage@<tag>`
 
 ### Config
 
-Once built, use the following config to communicate with Vault:
+Once built, use the following config block to communicate with Vault:
 
 ```
 vault <address> {
@@ -33,10 +33,10 @@ vault <address> {
 
     lock_timeout <value>
     lock_polling_interval <value>
-
-    log_level <value>
 }
 ```
+
+For more information, review `Caddyfile.example` and `Caddyfile.json`.
 
 Either 'address' + 'token' -OR- 'address' + 'approle_role_id'+'approle_secret_id' settings are required:
 - If using 'approle' authentication, short-lived tokens are managed on the fly.
@@ -55,7 +55,6 @@ Either 'address' + 'token' -OR- 'address' + 'approle_role_id'+'approle_secret_id
 | `insecure_skip_verify`  | `bool`     | no            | Disable verification of TLS certificate when communicating with Vault                       | false                  |
 | `lock_timeout`          | `duration` | no            | Storage lock timeout duration                                                               | 5m                     |
 | `lock_polling_interval` | `duration` | no            | Storage lock polling interval                                                               | 5s                     |
-| `log_level`             | `string`   | no            | Logging level for storage plugin                                                            | info                   |
 
 ## Additional Help
 
