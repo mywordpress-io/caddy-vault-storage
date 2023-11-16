@@ -2,7 +2,7 @@ package caddy_vault_storage
 
 import (
 	. "fmt"
-	certmagicVaultStorage "github.com/mywordpress-io/certmagic-vault-storage"
+	"github.com/mywordpress-io/certmagic-vault-storage"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"time"
@@ -16,8 +16,8 @@ var (
 	defaultApproleLoginPath  = "auth/approle/login"
 	defaultApproleLogoutPath = "auth/token/revoke-self"
 
-	defaultLockTimeout         = certmagicVaultStorage.Duration(5 * time.Minute)
-	defaultLockPollingInterval = certmagicVaultStorage.Duration(5 * time.Second)
+	defaultLockTimeout         = certmagic_vault_storage.Duration(5 * time.Minute)
+	defaultLockPollingInterval = certmagic_vault_storage.Duration(5 * time.Second)
 )
 
 func init() {
@@ -26,7 +26,7 @@ func init() {
 
 type Storage struct {
 	// URL the URL for Vault without any API versions or paths like 'https://vault.example.org:8201'.
-	URL *certmagicVaultStorage.URL `json:"address"`
+	URL *certmagic_vault_storage.URL `json:"address"`
 
 	// Token, the static Vault token.  If 'Token' is set, we blindly use that 'Token' when making any calls to
 	// the Vault API. Management of the token (create, revoke, renew, etc.) is up to the caller.
@@ -60,20 +60,20 @@ type Storage struct {
 	InsecureSkipVerify bool `json:"insecure_skip_verify"`
 
 	// Locking mechanism
-	LockTimeout         *certmagicVaultStorage.Duration `json:"lock_timeout"`
-	LockPollingInterval *certmagicVaultStorage.Duration `json:"lock_polling_interval"`
+	LockTimeout         *certmagic_vault_storage.Duration `json:"lock_timeout"`
+	LockPollingInterval *certmagic_vault_storage.Duration `json:"lock_polling_interval"`
 
 	// logger Zap sugared logger
 	logger *zap.SugaredLogger
 
 	// CertMagic storage backend for Vault
-	certmagicStorage *certmagicVaultStorage.Storage
+	certmagicStorage *certmagic_vault_storage.Storage
 }
 
 // Provisions an instance of the storage provider in caddy
 func (s *Storage) Provision(ctx caddy.Context) error {
 	s.logger = ctx.Logger().Sugar()
-	s.certmagicStorage = certmagicVaultStorage.NewStorage(s)
+	s.certmagicStorage = certmagic_vault_storage.NewStorage(s)
 	return nil
 }
 
@@ -99,7 +99,7 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 		if !d.NextArg() {
 			return d.ArgErr()
 		}
-		s.URL, err = certmagicVaultStorage.ParseURL(d.Val())
+		s.URL, err = certmagic_vault_storage.ParseURL(d.Val())
 		if err != nil {
 			return err
 		}
@@ -154,7 +154,7 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				if err != nil {
 					return err
 				}
-				lockTimeout := certmagicVaultStorage.Duration(val)
+				lockTimeout := certmagic_vault_storage.Duration(val)
 				s.LockTimeout = &lockTimeout
 			case "lock_polling_interval":
 				if !d.NextArg() {
@@ -164,7 +164,7 @@ func (s *Storage) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				if err != nil {
 					return err
 				}
-				lockPollingInterval := certmagicVaultStorage.Duration(val)
+				lockPollingInterval := certmagic_vault_storage.Duration(val)
 				s.LockPollingInterval = &lockPollingInterval
 			default:
 				return d.Errf("unrecognized parameter '%s'", d.Val())
@@ -238,7 +238,7 @@ func (s *Storage) GetInsecureSkipVerify() bool {
 	return s.InsecureSkipVerify
 }
 
-func (s *Storage) GetLockTimeout() certmagicVaultStorage.Duration {
+func (s *Storage) GetLockTimeout() certmagic_vault_storage.Duration {
 	if s.LockTimeout != nil {
 		return *s.LockTimeout
 	}
@@ -246,7 +246,7 @@ func (s *Storage) GetLockTimeout() certmagicVaultStorage.Duration {
 	return defaultLockTimeout
 }
 
-func (s *Storage) GetLockPollingInterval() certmagicVaultStorage.Duration {
+func (s *Storage) GetLockPollingInterval() certmagic_vault_storage.Duration {
 	if s.LockPollingInterval != nil {
 		return *s.LockPollingInterval
 	}

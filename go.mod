@@ -8,7 +8,7 @@ require (
 	github.com/caddyserver/caddy/v2 v2.7.5
 	github.com/caddyserver/certmagic v0.19.2
 	github.com/gruntwork-io/terratest v0.46.7
-	github.com/mywordpress-io/certmagic-vault-storage v0.0.0-20230515230828-016c6bfcfe4d
+	github.com/mywordpress-io/certmagic-vault-storage v0.1.0
 	github.com/onsi/ginkgo/v2 v2.12.1
 	github.com/onsi/gomega v1.27.10
 	github.com/pkg/errors v0.9.1

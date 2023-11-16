@@ -11,7 +11,7 @@ associated repo here: https://github.com/mywordpress-io/certmagic-vault-storage
 ### Build
 
 Build Caddy using `xcaddy` with the vault storage plugins:
-- `xcaddy build --output bin/caddy --with github.com/mywordpress-io/caddy-vault-storage --with github.com/mywordpress-io/certmagic-vault-storage`
+- `xcaddy build --output bin/caddy --with github.com/mywordpress-io/caddy-vault-storage@<tag> --with github.com/mywordpress-io/certmagic-vault-storage@<tag>`
 
 ### Config
 
