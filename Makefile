@@ -39,7 +39,7 @@ mod-tidy: ## Make sure go modules are tidy
 .PHONY: mod-tidy
 
 mod-update: export MODULE ?=
-mod-update: ## Update go proxy with latest module version: MODULE=github.com/mywordpress-io/certmagic-vault-storage@v0.1.1 make mod-update
+mod-update: ## Update go proxy with latest module version: MODULE=github.com/mywordpress-io/caddy-vault-storage@v0.1.1 make mod-update
 	@if [[ -n "${MODULE}" ]]; then                       \
 		GOPROXY=proxy.golang.org go list -m ${MODULE};   \
 	else                                                 \
